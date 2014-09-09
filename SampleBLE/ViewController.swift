@@ -14,10 +14,12 @@ class ViewController: UIViewController {
     let ServiceUUID = "9E672755-C622-49E0-93B8-4BE76A97208B"
     
     var manager:CBPeripheralManager!
-    var characteristic:CBCharacteristic!
+    var characteristic:CBMutableCharacteristic!
     var service:CBMutableService!
     
     var delegate:PeripheralManagerDelegate?
+    
+    @IBOutlet weak var TxtBxNotifyStr: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,27 @@ class ViewController: UIViewController {
             self.manager.stopAdvertising()
         }
     }
+    
+    /*
+     SendNotifyボタン押下時処理
+    */
+    @IBAction func onTouchUpInside_BtnSendNotify(sender: UIButton) {
+        if self.manager == nil || self.characteristic == nil {
+            NSLog("manager or characteristic is nil")
+            return
+        }
+        
+        var str = self.TxtBxNotifyStr.text
+        if str == nil || str.isEmpty {
+            NSLog("text is nil")
+            return
+        }
+        
+        var data = str.dataUsingEncoding(NSUTF8StringEncoding)
+        // Centralにデータを通知する
+        self.manager.updateValue(data, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+        NSLog("send notify")
+    }
 
     /*
      Serviceの設定
@@ -53,13 +76,25 @@ class ViewController: UIViewController {
         
         // キャラスタリスティックの設定
         var charUUID = CBUUID.UUIDWithString(CharacteristicUUID)
-        var val:Byte = 0x10
         
+        // Read, Write, Notify
+        var prop =
+            CBCharacteristicProperties.Read
+            | CBCharacteristicProperties.Write
+            | CBCharacteristicProperties.Notify;
+        
+        // Read, Writeの権限をつける。Notifyはnilになる
+        var perm =
+            CBAttributePermissions.Readable
+            | CBAttributePermissions.Writeable;
+        
+        // キャラクタリスティックの設定
+        // (Readのレスポンスを固定にしない場合、ここでのvalueはnilにしておく)
         self.characteristic = CBMutableCharacteristic(
             type: charUUID
-            , properties: CBCharacteristicProperties.Read
-            , value: NSData(bytes: &val, length: 1)
-            , permissions: CBAttributePermissions.Readable)
+            , properties: prop
+            , value: nil
+            , permissions: perm )
         
         // Serviceの設定
         var serviceUUID = CBUUID.UUIDWithString(ServiceUUID)
