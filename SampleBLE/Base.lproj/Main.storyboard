@@ -42,15 +42,22 @@
                                     <action selector="onTouchUpInside_BtnSendNotify:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bzc-GV-VQc"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8K-1P-PNG">
+                                <rect key="frame" x="34" y="167" width="296" height="142"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="LblLog" destination="f8K-1P-PNG" id="DTc-lJ-hjJ"/>
                         <outlet property="TxtBxNotifyStr" destination="uVx-Rq-SoC" id="zCv-FA-wmb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="139" y="136"/>
         </scene>
     </scenes>
 </document>
